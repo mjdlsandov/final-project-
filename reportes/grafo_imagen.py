@@ -5,13 +5,13 @@ def graficar_imagen():
 
     dot = Digraph()
 
-    # NODO PRINCIPAL
+    # Nodo principal
     dot.node(
         "Imagen",
         "Imagen Feliz"
     )
 
-    # CAPAS
+    # Capas
     for i in range(1, 6):
 
         nombre = "Capa " + str(i)
