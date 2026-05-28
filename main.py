@@ -7,8 +7,8 @@ from cargas.carga_imagenes import cargar_imagenes
 from cargas.carga_usuarios import cargar_usuarios
 
 from reportes.graphviz_reportes import graficar_arbol_capas
-from reportes.grafo_imagen import graficar_imagen
 from reportes.grafo_usuarios import graficar_arbol_usuarios
+from reportes.grafo_imagen import graficar_imagen
 
 from generacion.generador_imagen import (
     generar_imagen_general,
@@ -19,9 +19,7 @@ from generacion.generador_imagen import (
 
 from modelos.usuario import Usuario
 
-import os
-
-    # Estructuras de datos
+# Estructuras de datos
 
 arbol_capas = ArbolCapas()
 
@@ -29,97 +27,111 @@ arbol_usuarios = ArbolUsuarios()
 
 lista_imagenes = ListaCircularDoble()
 
-    # Menú
+# Menu principal
 
 while True:
 
     print("\n========== MENU ==========")
-
     print("1. Cargar capas")
     print("2. Cargar imagenes")
     print("3. Cargar usuarios")
     print("4. Ver arbol capas")
-
     print("5. Generar imagen GENERAL")
     print("6. Generar imagen INORDEN")
     print("7. Generar imagen PREORDEN")
     print("8. Generar imagen POSTORDEN")
-
     print("9. Mostrar imagenes")
-
     print("10. Mostrar capas INORDEN")
     print("11. Mostrar capas PREORDEN")
     print("12. Mostrar capas POSTORDEN")
-
     print("13. Ver capa")
-
     print("14. Agregar usuario")
     print("15. Ver usuarios")
     print("16. Ver arbol usuarios")
-
     print("17. Eliminar imagen generada")
-
     print("18. Ver grafo imagen")
-
-    print("19. Salir")
+    print("19. Agregar imagen a usuario")
+    print("20. Eliminar imagen de usuario")
+    print("21. Generar imagen usuario")
+    print("22. Eliminar usuario")
+    print("23. Salir")
 
     opcion = input("Seleccione opcion: ")
 
-    # Cargar capas
+# Cargar capas
 
     if opcion == "1":
 
         ruta = input("Ruta archivo capas: ")
 
-        cargar_capas(ruta, arbol_capas)
+        cargar_capas(
+            ruta,
+            arbol_capas
+        )
 
-    # Cargar imagenes
+# Cargar imagenes
 
     elif opcion == "2":
 
         ruta = input("Ruta archivo imagenes: ")
 
-        cargar_imagenes(ruta, lista_imagenes)
+        cargar_imagenes(
+            ruta,
+            lista_imagenes
+        )
 
-    # Cargar usuarios
+# Cargar usuarios
 
     elif opcion == "3":
 
         ruta = input("Ruta archivo usuarios: ")
 
-        cargar_usuarios(ruta, arbol_usuarios)
+        cargar_usuarios(
+            ruta,
+            arbol_usuarios
+        )
 
     # Ver arbol capas
 
     elif opcion == "4":
 
-        graficar_arbol_capas(arbol_capas)
+        graficar_arbol_capas(
+            arbol_capas
+        )
 
-        print("Arbol capas generado")
+        print("Reporte generado")
 
-    # Imagen general
+# Generar imagen general
 
     elif opcion == "5":
 
-        generar_imagen_general(arbol_capas)
+        generar_imagen_general(
+            arbol_capas
+        )
 
-    # Imagen en inorden
+# Generar imagen inorden
 
     elif opcion == "6":
 
-        generar_imagen(arbol_capas)
+        generar_imagen(
+            arbol_capas
+        )
 
-    # Imagen en preorden
+    # Generar imagen preorden
 
     elif opcion == "7":
 
-        generar_imagen_preorden(arbol_capas)
+        generar_imagen_preorden(
+            arbol_capas
+        )
 
-    # Imagen en postorden
+    # Generar imagen postorden
 
     elif opcion == "8":
 
-        generar_imagen_postorden(arbol_capas)
+        generar_imagen_postorden(
+            arbol_capas
+        )
 
     # Mostrar imagenes
 
@@ -127,19 +139,19 @@ while True:
 
         lista_imagenes.mostrar()
 
-    # INORDEN
+# Mostrar capas inorden
 
     elif opcion == "10":
 
         arbol_capas.inorden()
 
-    # PREORDEN
+# Mostrar capas preorden
 
     elif opcion == "11":
 
         arbol_capas.preorden()
 
-    # POSTORDEN
+# Mostrar capas postorden
 
     elif opcion == "12":
 
@@ -149,19 +161,27 @@ while True:
 
     elif opcion == "13":
 
-        id_capa = int(input("Ingrese ID capa: "))
+        id_capa = int(
+            input("Ingrese ID capa: ")
+        )
 
-        arbol_capas.mostrar_capa(id_capa)
+        arbol_capas.mostrar_capa(
+            id_capa
+        )
 
-    # Añadir usuario
+    # Agregar usuario
 
     elif opcion == "14":
 
-        nombre = input("Ingrese nombre usuario: ")
+        nombre = input(
+            "Nombre usuario: "
+        )
 
         usuario = Usuario(nombre)
 
-        arbol_usuarios.insertar(usuario)
+        arbol_usuarios.insertar(
+            usuario
+        )
 
         print("Usuario agregado")
 
@@ -171,53 +191,141 @@ while True:
 
         arbol_usuarios.inorden()
 
-    # Vista a arbol de usuarios
+# Ver arbol usuarios
 
     elif opcion == "16":
 
-        graficar_arbol_usuarios(arbol_usuarios)
+        graficar_arbol_usuarios(
+            arbol_usuarios
+        )
 
+        print("Arbol usuarios generado")
 
-    # Eliminar imagenes generadas
+    # Eliminar imagen generada
 
     elif opcion == "17":
 
-        archivos = [
-            "imagen_general.png",
-            "imagen_inorden.png",
-            "imagen_preorden.png",
-            "imagen_postorden.png"
-        ]
+        import os
 
-        eliminada = False
+        nombre = input(
+            "Nombre imagen: "
+        )
 
-        for archivo in archivos:
+        if os.path.exists(nombre):
 
-            if os.path.exists(archivo):
+            os.remove(nombre)
 
-                os.remove(archivo)
-
-                eliminada = True
-
-        if eliminada:
-
-            print("Imagenes eliminadas")
+            print("Imagen eliminada")
 
         else:
 
-            print("No existen imagenes")
+            print("Imagen no encontrada")
 
-    # Grafo 
+# Grafo imagen
 
     elif opcion == "18":
 
-        graficar_imagen()
+        graficar_imagen(
+            arbol_capas
+        )
 
-    # Salida
+        print("Grafo imagen generado")
+
+# Agregar imagen a usuario
 
     elif opcion == "19":
 
-        print("Saliendo del sistema...")
+        nombre_usuario = input(
+            "Usuario: "
+        )
+
+        nombre_imagen = input(
+            "Nombre imagen: "
+        )
+
+        arbol_usuarios.agregar_imagen_usuario(
+            nombre_usuario,
+            nombre_imagen
+        )
+
+# Eliminar imagen de usuario
+
+    elif opcion == "20":
+
+        nombre_usuario = input(
+            "Usuario: "
+        )
+
+        nombre_imagen = input(
+            "Nombre imagen: "
+        )
+
+        arbol_usuarios.eliminar_imagen_usuario(
+            nombre_usuario,
+            nombre_imagen
+        )
+
+# Generar imagen usuario
+
+    elif opcion == "21":
+
+        nombre_usuario = input(
+            "Usuario: "
+        )
+
+        usuario = arbol_usuarios.buscar(
+            nombre_usuario
+        )
+
+        if usuario:
+
+            print("\nImagenes usuario:")
+
+            for imagen in usuario.imagenes:
+
+                print("-", imagen)
+
+            seleccion = input(
+                "Seleccione imagen: "
+            )
+
+            if seleccion in usuario.imagenes:
+
+                generar_imagen_general(
+                    arbol_capas
+                )
+
+                print(
+                    "Imagen generada para usuario"
+                )
+
+            else:
+
+                print("Imagen no encontrada")
+
+        else:
+
+            print("Usuario no encontrado")
+
+# Eliminar usuario
+
+    elif opcion == "22":
+
+        nombre = input(
+            "Nombre usuario eliminar: "
+        )
+
+        arbol_usuarios.eliminar(
+            nombre
+        )
+
+        print("Usuario eliminado")
+
+# Salir
+
+    elif opcion == "23":
+
+        print("Saliendo...")
 
         break
 
