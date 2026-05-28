@@ -180,8 +180,6 @@ class ArbolCapas:
 
             return True
 
-
-        # BUSCAR DERECHA
         return self._mostrar_capa(
             nodo.derecha,
             id_buscar
