@@ -26,7 +26,10 @@ while True:
     print("3. Cargar usuarios")
     print("4. Ver arbol capas")
     print("5. Generar imagen")
-    print("6. Salir")
+    print("6. Mostrar imagenes")
+    print("7. Mostrar capas inorden")
+    print("8. Salir")
+    
 
     opcion = input("Seleccione opcion: ")
 
@@ -56,8 +59,16 @@ while True:
 
     elif opcion == "5":
 
-        generar_imagen()
+        generar_imagen(arbol_capas)
 
     elif opcion == "6":
 
-        break
+     lista_imagenes.mostrar()
+
+    elif opcion == "7":
+
+     arbol_capas.inorden()
+
+    elif opcion == "8":
+
+     break
