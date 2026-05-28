@@ -1,6 +1,7 @@
 from modelos.capa import Capa
 from modelos.pixel import Pixel
 
+
 def bloque(capa, x, y, color):
 
     for i in range(20):
@@ -14,7 +15,6 @@ def bloque(capa, x, y, color):
             )
 
             capa.agregar_pixel(pixel)
-
 
 def cargar_capas(ruta, arbol_capas):
 
@@ -32,6 +32,7 @@ def cargar_capas(ruta, arbol_capas):
             capa = Capa(id_capa)
 
             # Capa 1. Cara
+
 
             if id_capa == 1:
 
@@ -71,15 +72,15 @@ def cargar_capas(ruta, arbol_capas):
 
             elif id_capa == 2:
 
+                bloque(capa, 160, 160, "#000000")
                 bloque(capa, 160, 180, "#000000")
-                bloque(capa, 160, 200, "#000000")
 
             # Capa 3. Ojo derecho
 
             elif id_capa == 3:
 
+                bloque(capa, 240, 160, "#000000")
                 bloque(capa, 240, 180, "#000000")
-                bloque(capa, 240, 200, "#000000")
 
             # Capa 4. Boca
 
@@ -99,7 +100,6 @@ def cargar_capas(ruta, arbol_capas):
                 bloque(capa, 290, 230, "#FF69B4")
 
             # Insertar capa en el arbol
-
 
             arbol_capas.insertar(capa)
 
