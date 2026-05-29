@@ -9,12 +9,21 @@ def cargar_usuarios(ruta, arbol_usuarios):
 
             linea = linea.strip()
 
-            if linea:
+            if linea == "":
+                continue
 
-                nombre, datos = linea.split(":")
+            linea = linea.replace(";", "")
 
-                usuario = Usuario(nombre)
+            nombre, imagenes_texto = linea.split(":")
 
-                arbol_usuarios.insertar(usuario)
+            usuario = Usuario(nombre)
 
-                print("Usuario cargado:", nombre)
+            if imagenes_texto != "":
+                imagenes = imagenes_texto.split(",")
+
+                for imagen in imagenes:
+                    usuario.imagenes.append(imagen)
+
+            arbol_usuarios.insertar(usuario)
+
+            print("Usuario cargado:", nombre)

@@ -1,6 +1,3 @@
-from modelos.imagen import Imagen
-
-
 def cargar_imagenes(ruta, lista_imagenes):
 
     with open(ruta, "r") as archivo:
@@ -9,12 +6,20 @@ def cargar_imagenes(ruta, lista_imagenes):
 
             linea = linea.strip()
 
-            if linea:
+            if linea == "":
+                continue
 
-                id_imagen = linea
+            if "{" in linea and "}" in linea:
 
-                imagen = Imagen(id_imagen)
+                id_imagen = linea.split("{")[0]
 
-                lista_imagenes.insertar(imagen)
+                capas_texto = linea.split("{")[1].replace("}", "")
+
+                capas = capas_texto.split(",")
+
+                lista_imagenes.insertar(
+                    id_imagen,
+                    capas
+                )
 
                 print("Imagen cargada:", id_imagen)

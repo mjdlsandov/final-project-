@@ -1,21 +1,10 @@
 from modelos.capa import Capa
 from modelos.pixel import Pixel
 
-def bloque(capa, x, y, color):
-
-    for i in range(20):
-
-        for j in range(20):
-
-            pixel = Pixel(
-                x + i,
-                y + j,
-                color
-            )
-
-            capa.agregar_pixel(pixel)
 
 def cargar_capas(ruta, arbol_capas):
+
+    capa_actual = None
 
     with open(ruta, "r") as archivo:
 
@@ -23,83 +12,64 @@ def cargar_capas(ruta, arbol_capas):
 
             linea = linea.strip()
 
+            # ignorar vacias
             if linea == "":
                 continue
 
-            id_capa = int(linea)
+            # inicio capa
+            if "{" in linea:
 
-            capa = Capa(id_capa)
+                id_capa = int(
+                    linea.replace("{", "")
+                )
 
-            # Capa 1. Cara
+                capa_actual = Capa(id_capa)
 
-            if id_capa == 1:
+                continue
 
-                cara = [
+            # fin capa
+            if "}" in linea:
 
-                    "00011111000",
-                    "00111111100",
-                    "01111111110",
-                    "11111111111",
-                    "11111111111",
-                    "11111111111",
-                    "11111111111",
-                    "11111111111",
-                    "01111111110",
-                    "00111111100",
-                    "00011111000"
+                if capa_actual is not None:
 
-                ]
+                    arbol_capas.insertar(
+                        capa_actual
+                    )
 
-                for fila in range(len(cara)):
+                    print(
+                        "Capa cargada:",
+                        capa_actual.id
+                    )
 
-                    for columna in range(len(cara[fila])):
+                    capa_actual = None
 
-                        if cara[fila][columna] == "1":
+                continue
 
-                            x = columna * 20 + 100
-                            y = fila * 20 + 80
+            # pixeles
+            if capa_actual is not None:
 
-                            bloque(
-                                capa,
-                                x,
-                                y,
-                                "#FFFF00"
-                            )
+                linea = linea.replace(
+                    ";",
+                    ""
+                )
 
-            # Capa 2. Ojo izquierdo
+                datos = linea.split(",")
 
+                if len(datos) != 3:
+                    continue
 
-            elif id_capa == 2:
+                x = int(datos[0])
 
-                bloque(capa, 160, 160, "#000000")
-                bloque(capa, 160, 180, "#000000")
+                y = int(datos[1])
 
-            # Capa 3. Ojo derecho
+                color = datos[2].strip()
 
-            elif id_capa == 3:
+                pixel = Pixel(
+                    x,
+                    y,
+                    color
+                )
 
-                bloque(capa, 240, 160, "#000000")
-                bloque(capa, 240, 180, "#000000")
-
-            # Capa 4. Boca
-
-            elif id_capa == 4:
-
-                bloque(capa, 160, 240, "#000000")
-                bloque(capa, 180, 260, "#000000")
-                bloque(capa, 200, 260, "#000000")
-                bloque(capa, 220, 260, "#000000")
-                bloque(capa, 240, 240, "#000000")
-
-            # Capa 5. Mejias
-
-            elif id_capa == 5:
-
-                bloque(capa, 140, 210, "#FF69B4")
-                bloque(capa, 270, 210, "#FF69B4")
-
-            # Insertar capa en el arbol
-
-            arbol_capas.insertar(capa)
-
-            print("Capa cargada:", id_capa)
+                capa_actual.agregar_pixel(
+                    pixel
+                )
