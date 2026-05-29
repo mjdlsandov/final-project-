@@ -38,7 +38,7 @@ class ArbolCapas:
                 capa
             )
 
-        else:
+        elif capa.id > nodo.capa.id:
 
             nodo.derecha = self._insertar(
                 nodo.derecha,
@@ -112,75 +112,115 @@ class ArbolCapas:
 
 
     # ==========================================
-    # MOSTRAR CAPA
+    # BUSCAR CAPA
     # ==========================================
 
-    def mostrar_capa(self, id_buscar):
+    def buscar(self, id_buscar):
 
-        encontrado = self._mostrar_capa(
+        return self._buscar(
             self.raiz,
             id_buscar
         )
 
-        if not encontrado:
-
-            print("Capa no encontrada")
-
-
-    def _mostrar_capa(self, nodo, id_buscar):
+    def _buscar(self, nodo, id_buscar):
 
         if nodo is None:
 
-            return False
+            return None
 
-
-        # BUSCAR IZQUIERDA
-        encontrado = self._mostrar_capa(
-            nodo.izquierda,
-            id_buscar
-        )
-
-        if encontrado:
-
-            return True
-
-
-        # CAPA ENCONTRADA
         if nodo.capa.id == id_buscar:
 
-            print("\n======= CAPA =======")
-            print("ID:", nodo.capa.id)
-            print("Cantidad pixeles:", len(nodo.capa.pixeles))
+            return nodo.capa
 
-            from PIL import Image, ImageDraw
+        if id_buscar < nodo.capa.id:
 
-            imagen = Image.new(
-                "RGB",
-                (500, 500),
-                "#87CEEB"
+            return self._buscar(
+                nodo.izquierda,
+                id_buscar
             )
 
-            draw = ImageDraw.Draw(imagen)
-
-            for pixel in nodo.capa.pixeles:
-
-                draw.point(
-                    (
-                        pixel.x + 60,
-                        pixel.y + 40
-                    ),
-                    fill=pixel.color
-                )
-
-            nombre = "capa_" + str(id_buscar) + ".png"
-
-            imagen.save(nombre)
-
-            print("Imagen generada:", nombre)
-
-            return True
-
-        return self._mostrar_capa(
+        return self._buscar(
             nodo.derecha,
             id_buscar
         )
+
+
+    # ==========================================
+    # MOSTRAR CAPA + MATRIZ DISPERSA
+    # ==========================================
+
+    def mostrar_capa(self, id_buscar):
+
+        capa = self.buscar(id_buscar)
+
+        if capa is None:
+
+            print("Capa no encontrada")
+
+            return
+
+        print("\n======= CAPA =======")
+        print("ID:", capa.id)
+        print("Cantidad pixeles:", len(capa.pixeles))
+
+        # Mostrar algunos pixeles en consola
+        print("\nPrimeros pixeles:")
+
+        contador = 0
+
+        for pixel in capa.pixeles:
+
+            print(
+                "X:",
+                pixel.x,
+                "Y:",
+                pixel.y,
+                "COLOR:",
+                pixel.color
+            )
+
+            contador += 1
+
+            if contador == 20:
+                break
+
+        # Generar imagen individual de la capa
+        self.generar_imagen_capa(capa)
+
+        # Generar matriz dispersa con Graphviz
+        from reportes.matriz_dispersa import graficar_matriz_dispersa
+
+        graficar_matriz_dispersa(capa)
+
+
+    # ==========================================
+    # GENERAR IMAGEN DE UNA CAPA
+    # ==========================================
+
+    def generar_imagen_capa(self, capa):
+
+        from PIL import Image, ImageDraw
+
+        imagen = Image.new(
+            "RGB",
+            (500, 500),
+            "#87CEEB"
+        )
+
+        draw = ImageDraw.Draw(imagen)
+
+        for pixel in capa.pixeles:
+
+            draw.point(
+                (
+                    pixel.x + 60,
+                    pixel.y + 40
+                ),
+                fill=pixel.color
+            )
+
+        nombre = "capa_" + str(capa.id) + ".png"
+
+        imagen.save(nombre)
+
+        print("Imagen de capa generada:", nombre)
